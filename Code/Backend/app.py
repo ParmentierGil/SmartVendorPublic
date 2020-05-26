@@ -8,8 +8,11 @@ from RPi import GPIO
 from pad4pi import rpi_gpio
 
 import time
+current_milli_time = lambda: int(round(time.time() * 1000))
 import threading
 
+one_wire_file_name = "/sys/bus/w1/devices/28-60818f1d64ff/w1_slave"
+one_wire_file = open(one_wire_file_name, 'r')
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -49,25 +52,45 @@ def hallo():
 #@socketio.on('F2B_switch_light')
 
 
+# SENSOR FUNCTIONS
+
+def read_temperature():
+    for line in one_wire_file:
+        if 't=' in line:
+            temp_index = line.index('t=') + 2
+            temp = line[temp_index:]
+            print(temp)
+            print(DataRepository.update_temperature(temp))
+    one_wire_file.seek(0)
+
+
 def printKey(key):
   print(key)
-  if (key=="1"):
-    print("number")
-  elif (key=="A"):
-    print("letter")
+  
 
 # printKey will be called each time a keypad button is pressed
 keypad.registerKeyPressHandler(printKey)
+
+last_temp_reading_time = 0
+temp_reading_delta = 60000
 
 try:
     while(True):
         time.sleep(0.2)
 
-except:
+        if current_milli_time() > (last_temp_reading_time + temp_reading_delta):
+            read_temperature()
+            last_temp_reading_time = current_milli_time()
+
+
+except Exception as e:
+    print(str(e))
     keypad.cleanup()
+    one_wire_file.close()
 
 finally:
     keypad.cleanup()
+    one_wire_file.close()
 
 
 

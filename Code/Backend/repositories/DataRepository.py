@@ -11,9 +11,13 @@ class DataRepository:
         return gegevens
 
     @staticmethod
-    def read_status_lampen():
-        sql = "SELECT * from lampen"
-        return Database.get_rows(sql)
+    def update_temperature(temp):
+        sql = "INSERT INTO Temperature (TemperatureValue, TimeOfTemp) VALUES (%s, NOW())"
+        params = [temp]
+        temp_id =  Database.execute_sql(sql, params)
+        sql2 = "UPDATE VendingMachine SET LatestTemperature = %s"
+        params2 = [temp_id]
+        return Database.execute_sql(sql2, params2)
 
     @staticmethod
     def read_status_lamp_by_id(id):
