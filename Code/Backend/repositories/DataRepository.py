@@ -1,5 +1,6 @@
 from .Database import Database
 
+one_wire_temp_sensor_id = 1
 
 class DataRepository:
     @staticmethod
@@ -12,12 +13,10 @@ class DataRepository:
 
     @staticmethod
     def update_temperature(temp):
-        sql = "INSERT INTO Temperature (TemperatureValue, TimeOfTemp) VALUES (%s, NOW())"
-        params = [temp]
-        temp_id =  Database.execute_sql(sql, params)
-        sql2 = "UPDATE VendingMachine SET LatestTemperature = %s"
-        params2 = [temp_id]
-        return Database.execute_sql(sql2, params2)
+        sql = "INSERT INTO SensorHistory (VendingMachineId, SensorId, Action, ActionTime, MeasuredValue) VALUES (1, %s, %s, NOW(), %s)"
+        params = [one_wire_temp_sensor_id, "meting", temp]
+        SH_id =  Database.execute_sql(sql, params)
+        return SH_id
 
     @staticmethod
     def get_product_by_number(number):
