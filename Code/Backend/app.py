@@ -1,6 +1,7 @@
 # pylint: skip-file
 from repositories.DataRepository import DataRepository
 from helpers.TempSensor import TempSensor
+from helpers.LCD import LCD
 from helpers.Keypad import Keypad
 from flask import Flask, jsonify
 from flask_socketio import SocketIO
@@ -52,13 +53,15 @@ def page_connected(msg):
     socketio.emit('return_on_connect', 'Succesfully connected to backend')
 
 
+lcd = LCD()
 one_wire_temp_sensor = TempSensor(socketio, message_queue)
-keypad = Keypad(message_queue)
+keypad = Keypad(message_queue, lcd)
 
 print("Current Thread count: %i." % threading.active_count())
 
 if __name__ == '__main__':
     one_wire_temp_sensor.start()
     keypad.start()
+    lcd.start()
     socketio.run(app, debug=False, host='0.0.0.0', port=5500)
 
