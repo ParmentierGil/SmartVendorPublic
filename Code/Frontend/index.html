@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Smart Vendor</title>
+
+    <link rel="stylesheet" href="style/screen.css">
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
+        crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+    <div class="o-row c-top-row">
+        <h1 class="c-main-title">Smart Vendor</h1>
+        <div class="c-menu-item-container">
+            <a class="c-menu-item c-menu-item--active" href="index.html">Dashboard</a>
+            <a class="c-menu-item" href="products.html">Producten</a>
+            <a class="c-menu-item" href="orders.html">Bestellingen</a>
+        </div>     
+    </div>
+    <div class="o-row">
+        <div class="o-container c-temp-container">
+            <h2 class="c-temp-title">Temperatuur</h2>
+            <p class="c-temp-value js-temp">0°C</p>
+        </div>  
+    </div>  
+    <script src="script/dashboardpage.js"></script>
+</body>
+</html>

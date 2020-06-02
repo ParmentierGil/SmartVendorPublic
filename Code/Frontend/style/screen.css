@@ -1,0 +1,582 @@
+/*------------------------------------*\
+  #FONTS
+\*------------------------------------*/
+@font-face {
+    font-family: "Muli";
+    font-weight: 300;
+    src: url("fonts/Muli-Light.ttf") format("ttf");
+  }
+  
+  @font-face {
+    font-family: "Muli";
+    font-weight: 400;
+    src: url("fonts/Muli-Regular.ttf") format("ttf");
+  }
+
+  @font-face {
+    font-family: "Muli";
+    font-weight: 500;
+    src: url("fonts/Muli-Medium.ttf") format("ttf");
+  }
+  
+  @font-face {
+    font-family: "Muli";
+    font-weight: 600;
+    src: url("fonts/Muli-SemiBold.ttf") format("ttf");
+  }
+  
+  @font-face {
+    font-family: "Muli";
+    font-weight: 700;
+    src: url("fonts/Muli-Bold.ttf") format("ttf");
+  }
+
+  @font-face {
+    font-family: "Muli";
+    font-weight: 800;
+    src: url("fonts/Muli-ExtraBold.ttf") format("ttf");
+  }
+
+/*------------------------------------*\
+  #GENERIC
+\*------------------------------------*/
+
+/*
+    Generic: Page
+    ---
+    Global page styles
+*/
+
+html {
+    background: #f3f3f3;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: "Muli", Helvetica, arial, sans-serif;
+    color: #116466;
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+ * https://twitter.com/miketaylr/status/12228805301
+ *
+ * Customize the background color to match your design.
+ */
+
+::-moz-selection {
+    background: #0b3f40;
+    color: white;
+    text-shadow: none;
+}
+
+::selection {
+    background: #0b3f40;
+    color: white;
+    text-shadow: none;
+}
+
+/*------------------------------------*\
+  #Elements
+\*------------------------------------*/
+
+/*
+    Elements: Images
+    ---
+    Default markup for images to make them responsive
+*/
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
+/*
+    Elements: typography
+    ---
+    Default markup for typographic elements
+*/
+
+h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 40px;
+    margin: 0 0 24px;
+}
+
+/* Example inline media query */
+@media (min-width: 768px) {
+    h1 {
+        font-size: 58px;
+        line-height: 64px;
+    }
+}
+
+h2 {
+    font-size: 23px;
+    line-height: 32px;
+    margin: 0 0 24px;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 24px;
+    font-weight: 500;
+}
+
+h4,
+h5,
+h6 {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 24px;
+    font-weight: 500;
+}
+
+p,
+ol,
+ul,
+dl,
+table,
+address,
+figure {
+    margin: 0 0 24px;
+}
+
+ul,
+ol {
+    padding-left: 24px;
+}
+
+li ul,
+li ol {
+    margin-bottom: 0;
+}
+
+blockquote {
+    font-style: italic;
+    font-size: 23px;
+    line-height: 32px;
+    margin: 0 0 24px;
+    font-family: "Times New Roman", serif;
+}
+
+blockquote * {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+figcaption {
+    font-size: 12px;
+    line-height: 16px;
+    padding-top: 8px;
+    color: Grey;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: LightGrey;
+    margin: 0 0 24px;
+}
+
+a {
+    color: #116466;
+    transition: all .1s ease-in-out;
+    text-decoration-line: none;
+}
+
+a:visited,
+a:active {
+    color: #116466;
+}
+
+a:hover,
+a:focus {
+    color: #116466;
+}
+
+/*------------------------------------*\
+  #OBJECTS
+\*------------------------------------*/
+
+/*
+    Object: Object name
+    ---
+    Object description
+*/
+
+/*
+    Objects: Row
+    ---
+    Creates a horizontal row that stretches the viewport and adds padding around children
+*/
+
+.o-row {
+    padding: 24px 24px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.o-row--primary {
+    background-color: Orange;
+    color: White;
+}
+
+.o-row--dark {
+    background-color: DarkGrey;
+    color: White;
+}
+
+@media (min-width: 768px) {
+    .o-row--lg {
+        padding: 48px 48px 0px;
+    }
+}
+
+/*
+    Objects: Container
+    ---
+    Creates a horizontal container that sets de global max-width
+*/
+
+.o-container {
+    margin: auto;
+    max-width: 90em;
+}
+
+/*
+    Objects: Layout
+    ---
+    The layout object provides us with a column-style layout system. This object
+    contains the basic structural elements, but classes should be complemented
+    with width utilities
+*/
+
+.o-layout {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.o-layout__item {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* gutter modifiers, these affect o-layout__item too */
+
+.o-layout--gutter {
+    margin: 0 -12px;
+}
+
+.o-layout--gutter > .o-layout__item {
+    padding-right: 12px;
+}
+
+.o-layout--gutter-sm {}
+
+.o-layout--gutter-sm > .o-layout__item {}
+
+.o-layout--gutter-lg {}
+
+.o-layout--gutter-lg > .o-layout__item {}
+
+/* reverse horizontal row modifier */
+
+.o-layout--row-reverse {}
+
+/* Horizontal alignment modifiers*/
+
+.o-layout--justify-start {}
+
+.o-layout--justify-end {}
+
+.o-layout--justify-center {}
+
+.o-layout--justify-space-around {}
+
+.o-layout--justify-space-between {}
+
+/* Vertical item alignment modifiers */
+
+.o-layout--align-start {}
+
+.o-layout--align-end {}
+
+.o-layout--align-center {}
+
+.o-layout--align-baseline {}
+
+/* Vertical content alignment modifiers. Only work if there is one than one flex item */
+
+.o-layout--align-content-start {}
+
+.o-layout--align-content-end {}
+
+.o-layout--align-content-center {}
+
+.o-layout--align-content-space-around {}
+
+.o-layout--align-content-space-between {}
+
+
+/*------------------------------------*\
+  #COMPONENTS
+\*------------------------------------*/
+
+/*
+    Component: Component name
+    ---
+    Component description
+*/
+
+
+.c-top-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.c-menu-item-container {
+    flex-grow: 50;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+
+.c-menu-item {
+    line-height: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    margin: auto 0 auto 32px;
+}
+
+.c-menu-item--active {
+    text-decoration-line: underline;
+}
+
+.c-temp-container {
+    border: 1px solid #116466;
+    background-color: #c3d9d3;
+    padding: 8px 16px;
+}
+
+.c-temp-value {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+
+/*
+    Component: layout block
+    ---
+    A small component to demonstrate the layout items
+*/
+
+/*------------------------------------*\
+  #UTILITIES
+\*------------------------------------*/
+
+/*
+    Utilities: max-width
+    ---
+    Utility classes to put specific max widths onto elements.
+*/
+.u-max-width-sm {
+    max-width: 36em !important;
+}
+
+.u-max-width-md {
+    max-width: 45em;
+}
+
+.u-max-width-lg {
+    max-width: 60em;
+}
+
+.u-max-width-xl {
+    max-width: 75em;
+}
+
+.u-max-width-none {
+    max-width: none;
+}
+
+/*
+    Utility: Utility name
+    ---
+    Utility description
+*/
+
+/*
+    Utility: Widths
+    ---
+    Utility classes to put specific widths onto elements
+    Will be mostly used on o-layout__item
+*/
+
+.u-width-auto {
+    width: auto;
+}
+
+.u-1-of-2 {
+    width: 50%;
+}
+
+.u-1-of-3 {
+    width: 33.333333%;
+}
+
+.u-2-of-3 {
+    width: 66.666666%;
+}
+
+.u-1-of-4 {
+    width: 25%;
+}
+
+.u-3-of-4 {
+    width: 75%;
+}
+
+.u-1-of-5 {
+    width: 20%;
+}
+
+.u-2-of-5 {
+    width: 40%;
+}
+
+.u-3-of-5 {
+    width: 60%;
+}
+
+.u-4-of-5 {
+    width: 80%;
+}
+
+.u-1-of-6 {
+    width: 16.66666%;
+}
+
+.u-5-of-6 {
+    width: 83.33333%;
+}
+
+@media (min-width: 576px) {
+    .u-1-of-2-bp1 {}
+}
+
+@media (min-width: 768px) {
+    .u-1-of-2-bp2 {}
+}
+
+@media (min-width: 992px) {
+    .u-1-of-2-bp3 {}
+}
+
+@media (min-width: 1200px) {
+    .u-1-of-2-bp4 {}
+}
+
+
+/*------------------------------------*\
+  #MEDIA
+\*------------------------------------*/
+
+/*
+    Media Queries
+    ---
+    EXAMPLE Media Queries for Responsive Design.
+    These examples override the primary ('mobile first') styles.
+    USE THEM INLINE!
+*/
+
+/* Extra small devices (portrait phones, less than 576px)
+   No media query since this is the default in mobile first design
+*/
+
+/* Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {}
+*/
+
+/* Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {}
+*/
+
+/* Large devices (landscape tablets, desktops, 992px and up)
+@media (min-width: 992px) {}
+*/
+
+/* Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {}
+*/
+
+/*
+    Print styles.
+    ---
+    Inlined to avoid the additional HTTP request:
+    http://www.phpied.com/delay-loading-your-print-css/
+*/
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important;
+        /* Black prints faster:
+                                   http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    pre {
+        white-space: pre-wrap !important;
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+    thead {
+        display: table-header-group;
+    }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
