@@ -1,18 +1,18 @@
 import time
 current_milli_time = lambda: int(round(time.time() * 1000))
-import threading
+from threading import Thread, Lock
 from repositories.DataRepository import DataRepository
 
 one_wire_file_name = "/sys/bus/w1/devices/28-60818f1d64ff/w1_slave"
 one_wire_file = open(one_wire_file_name, 'r')
 
-class TempSensor(threading.Thread):
+class TempSensor(Thread):
     def __init__(self, socket, message_queue):
-        threading.Thread.__init__(self)
+        Thread.__init__(self)
         self.socket = socket
         self.message_queue = message_queue
         self.last_temp_reading_time = 0
-        self.temp_reading_delta = 10000
+        self.temp_reading_delta = 30000
 
     def run(self):
         try:
@@ -20,7 +20,6 @@ class TempSensor(threading.Thread):
                 if current_milli_time() > (self.last_temp_reading_time + self.temp_reading_delta):
                     self.read_temperature()
                     self.last_temp_reading_time = current_milli_time()
-
         except:
             one_wire_file.close()
 
@@ -36,3 +35,4 @@ class TempSensor(threading.Thread):
                 DataRepository.update_temperature(temp)
                 self.socket.emit("new_temp", temp)
         one_wire_file.seek(0)
+    

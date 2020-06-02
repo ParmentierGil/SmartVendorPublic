@@ -3,6 +3,8 @@ from repositories.DataRepository import DataRepository
 from helpers.TempSensor import TempSensor
 from helpers.LCD import LCD
 from helpers.Keypad import Keypad
+from helpers.MuntstukAcceptor import MuntstukAcceptor
+from helpers.LoadCell import LoadCell
 from flask import Flask, jsonify
 from flask_socketio import SocketIO
 from flask_cors import CORS
@@ -10,7 +12,8 @@ from flask_script import Manager, Server
 from RPi import GPIO
 
 import time
-import threading
+import threading 
+import multiprocessing as mp
 import queue
 
 message_queue = queue.Queue()
@@ -55,13 +58,23 @@ def page_connected(msg):
 
 lcd = LCD()
 one_wire_temp_sensor = TempSensor(socketio, message_queue)
-keypad = Keypad(message_queue, lcd)
+muntstuk_acceptor = MuntstukAcceptor(message_queue, lcd)
+load_cell = LoadCell(lcd)
+keypad = Keypad(message_queue, lcd, muntstuk_acceptor, load_cell)
 
-print("Current Thread count: %i." % threading.active_count())
+lcd.setDaemon(True)
+one_wire_temp_sensor.setDaemon(True)
+muntstuk_acceptor.setDaemon(True)
+keypad.setDaemon(True)
 
 if __name__ == '__main__':
-    one_wire_temp_sensor.start()
-    keypad.start()
-    lcd.start()
-    socketio.run(app, debug=False, host='0.0.0.0', port=5500)
+    try:
+        lcd.start()
+        one_wire_temp_sensor.start()
+        keypad.start() 
+        muntstuk_acceptor.start()
+        print("Current Thread count: %i." % threading.active_count())
+        socketio.run(app, debug=False, host='0.0.0.0', port=5500)
+    except:
+        GPIO.cleanup()
 
