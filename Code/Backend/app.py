@@ -5,7 +5,7 @@ from helpers.LCD import LCD
 from helpers.Keypad import Keypad
 from helpers.MuntstukAcceptor import MuntstukAcceptor
 from helpers.LoadCell import LoadCell
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_socketio import SocketIO
 from flask_cors import CORS
 from flask_script import Manager, Server
@@ -44,9 +44,16 @@ t.start()
 def hallo():
     return 'niets'
 
-@app.route('/flaske')
-def hallo2():
-    return "Server is running, er zijn momenteel geen API endpoints beschikbaar."    
+@app.route('/api/v1/products')
+def products():
+    products = DataRepository.get_all_products()
+    return jsonify(products)
+
+@app.route('/api/v1/product/<id>', methods=['DELETE'])
+def product(id):
+    if request.method == 'DELETE':    
+        deleted = DataRepository.delete_product(id)
+        return jsonify(deleted)
 
 
 # SOCKET IO

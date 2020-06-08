@@ -52,3 +52,14 @@ class DataRepository:
         sql = "INSERT INTO SensorHistory (VendingMachineId, SensorId, Action, ActionTime, MeasuredValue) VALUES (1, %s, %s, NOW(), %s)"
         params = [load_cell_sensor_id, "meting", weight]
         return Database.execute_sql(sql, params)
+
+    @staticmethod
+    def get_all_products():
+        sql = "SELECT * FROM Product WHERE Active = 1 ORDER BY NumberInVendingMachine DESC"
+        return Database.get_rows(sql)
+
+    @staticmethod
+    def delete_product(id):
+        sql = "UPDATE Product SET Active = 0 WHERE ProductId = %s"
+        params = [id]
+        return Database.execute_sql(sql, params)

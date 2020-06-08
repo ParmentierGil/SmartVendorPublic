@@ -4,7 +4,7 @@ import threading
 import time
 from repositories.DataRepository import DataRepository
 
-TARRA_CONSTANT = 113900
+TARE_CONSTANT = 113900
 GRAM_CONSTANT = 108
 
 class LoadCell(threading.Thread):
@@ -23,7 +23,7 @@ class LoadCell(threading.Thread):
             for i in range(0,20):
                 self.hx711.reset()   # Before we start, reset the HX711 (not obligate)
                 measures_avg = sum(self.hx711.get_raw_data()) / 5
-                weight = round((measures_avg - TARRA_CONSTANT) / GRAM_CONSTANT, 0)
+                weight = round((measures_avg - TARE_CONSTANT) / GRAM_CONSTANT, 0)
                 print(weight)
                 DataRepository.insert_weight(weight)
                 time.sleep(1)
