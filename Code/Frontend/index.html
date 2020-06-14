@@ -1,33 +1,106 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Smart Vendor</title>
 
     <link rel="stylesheet" href="style/screen.css">
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
-        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous">
     </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <div class="o-row c-top-row">
-        <h1 class="c-main-title">Smart Vendor</h1>
-        <div class="c-menu-item-container">
+    <div class="full-body">
+        <div class="c-mobile-menu">
+            <div class="c-top-of-menu">
+                <h2 class="c-menu-item c-menu-item--title">Menu</h2>
+                <button class="c-close-menu-button js-close-menu">
+                    <svg class="c-close-menu-button-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                        viewBox="0 0 14 14">
+                        <path id="ic_clear_24px"
+                            d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z"
+                            transform="translate(-5 -5)" />
+                    </svg>
+                </button>
+            </div>
+
             <a class="c-menu-item c-menu-item--active" href="index.html">Dashboard</a>
             <a class="c-menu-item" href="products.html">Producten</a>
             <a class="c-menu-item" href="orders.html">Bestellingen</a>
-        </div>     
+        </div>
+        <div class="full-body-without-menu">
+            <div class="c-top-row">
+                <button class="c-open-menu-button js-open-menu">
+                    <svg class="c-open-menu-button-icon" xmlns="http://www.w3.org/2000/svg" width="21.975"
+                        height="14.65" viewBox="0 0 21.975 14.65">
+                        <path id="ic_menu_24px" d="M3,20.65H24.975V18.208H3Zm0-6.1H24.975V12.1H3ZM3,6V8.442H24.975V6Z"
+                            transform="translate(-3 -6)" fill="#116466" />
+                    </svg>
+                </button>
+                <h1 class="c-main-title">Smart Vendor</h1>
+                <div class="c-menu-item-container--wide-screen">
+                    <a class="c-menu-item c-menu-item--active" href="index.html">Dashboard</a>
+                    <a class="c-menu-item" href="products.html">Producten</a>
+                    <a class="c-menu-item" href="orders.html">Bestellingen</a>
+                </div>
+            </div>
+            <div class="c-sensors-container">
+                <div class="c-sensor-container">
+                    <h2>Status: Online</h2>
+                </div>
+                <div class="c-sensor-container">
+                    <h2 class="c-data-title">Temperature</h2>
+                    <div class="c-data-value-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17.086" height="39.394"
+                            viewBox="0 0 17.086 39.394">
+                            <g id="thermometer" transform="translate(-19 1)">
+                                <g id="Group_1" data-name="Group 1" transform="translate(19 -1)">
+                                    <path id="Path_2" data-name="Path 2"
+                                        d="M208.949,116.138l-.5-.163V97.15a.837.837,0,0,0-1.661,0v18.9l-.462.193a3.8,3.8,0,1,0,2.627-.107Z"
+                                        transform="translate(-199.238 -88.899)" fill="#116466" />
+                                    <path id="Path_3" data-name="Path 3"
+                                        d="M155.909,23.45V4.509a4.509,4.509,0,1,0-9.018,0V23.745a8.544,8.544,0,1,0,9.018-.295Zm-4.272,13.571a6.171,6.171,0,0,1-2.373-11.866V4.509a2.136,2.136,0,1,1,4.271,0v7.713h-.653v.95h.653V15.6h-.653v.949h.653v2.669h-.653v.949h.653v4.809a6.17,6.17,0,0,1-1.9,12.04Z"
+                                        transform="translate(-143.094)" fill="#116466" />
+                                </g>
+                            </g>
+                        </svg>
+                        <p class="c-data-value js-temp">0°C</p>
+                    </div>
+                </div>
+                <div class="c-sensor-container">
+                    <h2 class="c-data-title">Total Money</h2>
+                    <div class="c-data-value-container">
+                        <svg class="c-money-icon" xmlns="http://www.w3.org/2000/svg" width="38.182" height="25.545"
+                            viewBox="0 0 38.182 25.545">
+                            <path id="euros-finance-financial-currency-money-cash-icon"
+                                d="M11.342,102.39h-.474l-.368.857h.914a4.4,4.4,0,0,0,1.08,2.419,3.161,3.161,0,0,0,2.409.962,3.569,3.569,0,0,0,1.827-.461l.013-1.793a2.964,2.964,0,0,1-1.829.749q-1.375,0-1.756-1.876h2.065l.368-.857H13.064l.011-.5h2.658l.367-.854H13.206q.414-1.626,1.661-1.625a2.942,2.942,0,0,1,1.556.532l.723-1.48a4.763,4.763,0,0,0-2.16-.6,3.262,3.262,0,0,0-2.351.9,4.1,4.1,0,0,0-1.174,2.268h-.6l-.367.854h.865a.765.765,0,0,0-.011.193v.3ZM9.323,84.727v2.251H35.706v13.938h2.476V84.727ZM4.648,91.655H31.03v13.938h2.479V89.4H4.648ZM0,110.272H28.861V94.083H0ZM14.43,95.656c2.785,0,5.045,2.878,5.045,6.43s-2.26,6.429-5.045,6.429-5.044-2.88-5.044-6.429,2.257-6.43,5.044-6.43"
+                                transform="translate(0 -84.727)" fill="#116466" />
+                        </svg>
+                        <p class="c-data-value js-money">€13.50</p>
+                    </div>
+                </div>
+                <div class="c-sensor-container">
+                    <h2 class="c-data-title">Last Order</h2>
+                    <div class="c-data-value-container">
+                        <svg class="c-clock-icon" xmlns="http://www.w3.org/2000/svg" width="29.667" height="29.667"
+                            viewBox="0 0 29.667 29.667">
+                            <path id="ic_schedule_24px"
+                                d="M16.819,2A14.833,14.833,0,1,0,31.667,16.833,14.826,14.826,0,0,0,16.819,2Zm.015,26.7A11.867,11.867,0,1,1,28.7,16.833,11.863,11.863,0,0,1,16.833,28.7Zm.742-19.283H15.35v8.9l7.788,4.673,1.112-1.825L17.575,17.2Z"
+                                transform="translate(-2 -2)" fill="#116466" />
+                        </svg>
+                        <p class="c-data-value js-money">Today 12:50</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="o-row">
-        <div class="o-container c-temp-container">
-            <h2 class="c-temp-title">Temperatuur</h2>
-            <p class="c-temp-value js-temp">0°C</p>
-        </div>  
-    </div>  
+    </div>
+    </div>
     <script src="script/dashboardpage.js"></script>
 </body>
+
 </html>

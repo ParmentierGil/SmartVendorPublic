@@ -16,6 +16,24 @@ let socket;
 
 //#region ListenTo
 
+const listenToOpenMenu = function(){
+  let openButton = document.querySelector('.js-open-menu');
+
+  openButton.addEventListener('click', function() {
+    document.querySelector('.c-mobile-menu').style.display = "flex";
+    openButton.style.display = "none";
+  })
+}
+
+const listenToCloseMenu = function(){
+  let closeButton = document.querySelector('.js-close-menu');
+
+  closeButton.addEventListener('click', function() {
+    document.querySelector('.c-mobile-menu').style.display = "none";
+    document.querySelector('.js-open-menu').style.display = "block";
+  })
+}
+
 
 //#endregion
 
@@ -34,6 +52,9 @@ const init = function () {
         tempInCelsius = Math.round(temp / 100) / 10;
         document.querySelector('.js-temp').innerHTML = tempInCelsius + '°C';
     })
+
+    listenToOpenMenu();
+    listenToCloseMenu();
 };
 
 document.addEventListener("DOMContentLoaded", function () {
