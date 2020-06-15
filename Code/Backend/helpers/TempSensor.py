@@ -12,8 +12,7 @@ class TempSensor(Thread):
         self.socket = socket
         self.message_queue = message_queue
         self.last_temp_reading_time = 0
-        self.temp_reading_delta = 30000
-
+        self.temp_reading_delta = 60000
     def run(self):
         try:
             while True:

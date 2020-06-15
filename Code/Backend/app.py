@@ -13,6 +13,7 @@ from flask_script import Manager, Server
 from RPi import GPIO
 
 import time
+import json
 import threading
 import multiprocessing as mp
 import queue
@@ -49,24 +50,52 @@ t.start()
 def hallo():
     return 'niets'
 
+@app.route('/api/v1/status')
+def status():
+    status = DataRepository.get_status()
+    return jsonify(status)
 
 @app.route('/api/v1/products')
 def products():
     products = DataRepository.get_all_products()
     return jsonify(products)
 
-
-@app.route('/api/v1/product/<id>', methods=['DELETE'])
+@app.route('/api/v1/product/<id>', methods=['DELETE', 'PUT'])
 def product(id):
     if request.method == 'DELETE':
         deleted = DataRepository.delete_product(id)
         return jsonify(deleted)
+    elif request.method == 'PUT':
+        data = json.loads(request.data)
+        print(data)
+        try:
+            product = DataRepository.update_product(data)
+            print(product)
+            return jsonify(id)
+        except:
+            return jsonify("failed")
+
+@app.route('/api/v1/products/inmachine')
+def products_in_machine():
+    products = DataRepository.get_products_in_machine()
+    return jsonify(products)
+
+@app.route('/api/v1/totalmoney')
+def total_money():
+    money = DataRepository.get_total_money()
+    return jsonify(money)
+
+@app.route('/api/v1/lastorder')
+def last_order():
+    order = DataRepository.get_last_order()
+    return jsonify(order)
 
 
 # SOCKET IO
 @socketio.on('connected')
 def page_connected(msg):
     print(msg)
+    socketio.emit('status_changed', 1)
     socketio.emit('return_on_connect', 'Succesfully connected to backend')
 
 
@@ -81,15 +110,18 @@ lcd = LCD()
 one_wire_temp_sensor = TempSensor(socketio, message_queue)
 muntstuk_acceptor = MuntstukAcceptor(message_queue, lcd)
 load_cell = LoadCell(lcd)
-keypad = Keypad(message_queue, lcd, muntstuk_acceptor, load_cell, motors)
+keypad = Keypad(socketio, lcd, muntstuk_acceptor, load_cell, motors)
 
 lcd.setDaemon(True)
 one_wire_temp_sensor.setDaemon(True)
 muntstuk_acceptor.setDaemon(True)
 keypad.setDaemon(True)
 
+
+
 if __name__ == '__main__':
     try:
+        DataRepository.set_status(1)
         lcd.start()
         one_wire_temp_sensor.start()
         keypad.start()
@@ -98,4 +130,5 @@ if __name__ == '__main__':
         socketio.run(app, debug=False, host='0.0.0.0', port=5500)
     except:
         GPIO.cleanup()
+        DataRepository.set_status(0)
 

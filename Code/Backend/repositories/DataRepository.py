@@ -14,6 +14,18 @@ class DataRepository:
         return gegevens
 
     @staticmethod
+    def set_status(online):
+        sql = "UPDATE VendingMachine SET Online = %s WHERE VendingMachineId = 1"
+        params = [online]
+        Database.execute_sql(sql, params)
+
+    @staticmethod
+    def get_status():
+        sql = "SELECT Online FROM VendingMachine WHERE VendingMachineId = 1"
+        return Database.get_one_row(sql)
+        
+
+    @staticmethod
     def update_temperature(temp):
         sql = "INSERT INTO SensorHistory (VendingMachineId, SensorId, Action, ActionTime, MeasuredValue) VALUES (1, %s, %s, NOW(), %s)"
         params = [one_wire_temp_sensor_id, "meting", temp]
@@ -29,6 +41,13 @@ class DataRepository:
         return product
 
     @staticmethod
+    def get_products_in_machine():
+        sql = "SELECT * FROM Product WHERE NumberInVendingMachine != 0"
+        products = Database.get_rows(sql)
+        print(products)      
+        return products
+
+    @staticmethod
     def buy_product(product):
         sql2 = "UPDATE vendingmachine.Order SET ProductId = %s, Credit = Credit - %s WHERE VendingMachineId = 1 AND MomentOfPurchase IS NULL"
         params2 = [product['ProductId'], product['Price']]
@@ -38,13 +57,26 @@ class DataRepository:
     def insert_credit(amount):
         sql = "SELECT OrderId FROM vendingmachine.Order WHERE VendingMachineId = 1 AND MomentOfPurchase IS NULL"
         active_order_id = Database.get_one_row(sql)['OrderId']
-        sql2 = "UPDATE vendingmachine.Order SET Credit = Credit + %s WHERE OrderId = %s"
-        params = [amount, active_order_id]
-        return Database.execute_sql(sql2, params)
+        sql2 = "INSERT INTO SensorHistory (VendingMachineId, SensorId, Action, ActionTime, MeasuredValue) VALUES (1, %s, %s, NOW(), %s)"
+        params = [coin_acceptor_sensor_id, "geld_in", amount]
+        Database.execute_sql(sql2, params)
+        sql3 = "UPDATE vendingmachine.Order SET Credit = Credit + %s WHERE OrderId = %s"
+        params2 = [amount, active_order_id]
+        return Database.execute_sql(sql3, params2)
     
     @staticmethod
     def get_total_credit():
         sql = "SELECT Credit FROM vendingmachine.Order WHERE VendingMachineId = 1 AND MomentOfPurchase IS NULL"
+        return Database.get_one_row(sql)
+
+    @staticmethod
+    def get_total_money():
+        sql = "SELECT SUM(MeasuredValue) as total FROM SensorHistory WHERE Action = 'geld_in'"
+        return Database.get_one_row(sql)
+
+    @staticmethod
+    def get_last_order():
+        sql = "SELECT * FROM vendingmachine.Order WHERE VendingMachineId = 1 ORDER BY MomentOfPurchase DESC"
         return Database.get_one_row(sql)
 
     @staticmethod
@@ -62,4 +94,22 @@ class DataRepository:
     def delete_product(id):
         sql = "UPDATE Product SET Active = 0 WHERE ProductId = %s"
         params = [id]
+        return Database.execute_sql(sql, params)
+
+    @staticmethod
+    def confirm_order(productid):
+        sql = "UPDATE vendingmachine.Order SET MomentOfPurchase = NOW(), ProductHasFallen = 1 WHERE MomentOfPurchase IS NULL"
+        Database.execute_sql(sql)
+        sql2 = "INSERT INTO vendingmachine.Order (VendingMachineId) VALUES (1)"
+        Database.execute_sql(sql2)        
+        sql3 = "UPDATE Product SET SoldCount = SoldCount + 1 WHERE ProductId = %s"
+        param = [productid]
+        Database.execute_sql(sql3, param)
+
+    @staticmethod
+    def update_product(product):
+        sql = "UPDATE Product SET Name = %s, Price = %s, StockCount = %s, NumberInVendingMachine = %s WHERE ProductId = %s"
+        # if product['NumberInVendingMachine'] == None:
+        #     product['NumberInVendingMachine'] = 'null'
+        params = [product['Name'], product['Price'], product['StockCount'], product['NumberInVendingMachine'], product['ProductId']]
         return Database.execute_sql(sql, params)

@@ -23,9 +23,9 @@ factory = rpi_gpio.KeypadFactory()
 
 
 class Keypad(threading.Thread):
-    def __init__(self, message_queue, lcd, muntstuk_acceptor, load_cell, motors):
+    def __init__(self, socket, lcd, muntstuk_acceptor, load_cell, motors):
         threading.Thread.__init__(self)
-        self.message_queue = message_queue
+        self.socket = socket
         self.keypad = factory.create_keypad(
             keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
         self.input_string = ""
@@ -60,6 +60,8 @@ class Keypad(threading.Thread):
                 #     self.motors[choice].release_item()
                 print("Item dropped!")
 
+                DataRepository.confirm_order(product['ProductId'])
+                self.socket.emit("new_order", {'product': product['Name'], 'price': product['Price'], 'time': time.localtime()})
                 self.muntstuk_acceptor.accepting_coins = True
 
         elif key == 'C' and len(self.input_string) > 0:
