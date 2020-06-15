@@ -2,10 +2,12 @@ let socket;
 
 let allProducts;
 
+let IP = "http://178.116.70.109:5500"
+
 //#region FUNCTIONS
 
-const prodById = function(id){
-    for (let prod of allProducts){
+const prodById = function (id) {
+    for (let prod of allProducts) {
         if (prod.ProductId == id)
             return prod;
     }
@@ -21,7 +23,7 @@ function sleep(ms) {
 //#region GET
 
 const getAllProducts = function () {
-    handleData("http://192.168.1.225:5500/api/v1/products", showAllProducts);
+    handleData(`${IP}/api/v1/products`, showAllProducts);
 }
 
 
@@ -31,16 +33,22 @@ const getAllProducts = function () {
 
 const showAllProducts = function (products) {
     console.log(products)
-    allProducts = products; 
+    allProducts = products;
     prodHTML = "";
 
     for (prod of products) {
+        let number = prod.NumberInVendingMachine
+
+        if (prod.NumberInVendingMachine == null) {
+            number = " "
+        }
+
         prodHTML += `<div class="c-list-entry" id="${prod.ProductId}-prod">
         <div class="c-list-entry__name">${prod.Name}</div>
         <div class="c-list-entry__price">€${prod.Price}</div>
-        <div class="c-list-entry__number">${prod.NumberInVendingMachine}</div>
+        <div class="c-list-entry__number">${number}</div>
         <div class="c-list-entry__actions">
-            <button class="c-list-entry__actions-edit" id="${prod.ProductId}-edit">
+            <button class="c-list-entry__actions-edit js-edit" id="${prod.ProductId}-edit">
                 <svg class="c-list-entry__actions-edit-icon" xmlns="http://www.w3.org/2000/svg" width="12.002" height="12.002"
                     viewBox="0 0 12.002 12.002">
                     <path id="ic_edit_24px"
@@ -57,14 +65,44 @@ const showAllProducts = function (products) {
             </button>
         </div>
         </div>
-        <div class="c-list-entry-divider"></div>`
+        <div class="c-list-entry-divider"></div>
+        <div class="c-list-entry-edit-container" id="${prod.ProductId}-edit-cont">
+                        <h2 class="c-list-entry-edit__title">Edit Product</h2>
+                        <div class="c-list-entry-edit__name">
+                            <label class="c-list-entry-edit-label" for="product-name">Name</label>
+                            <input class="c-list-entry-edit-input" type="text" id="${prod.ProductId}-product-name" placeholder="${prod.Name}"/>
+                        </div>
+                        <div class="c-list-entry-edit__price">
+                            <label class="c-list-entry-edit-label" for="product-price">Price</label>
+                            <input class="c-list-entry-edit-input" type="number" id="${prod.ProductId}-product-price" placeholder="${prod.Price}"/>
+                        </div>
+                        <div class="c-list-entry-edit__stock">
+                            <label class="c-list-entry-edit-label" for="product-stock">Stock Count</label>
+                            <input class="c-list-entry-edit-input" type="number" id="${prod.ProductId}-product-stock" placeholder="${prod.StockCount}"/>
+                        </div>
+                        <div class="c-list-entry-edit__number">
+                            <label class="c-list-entry-edit-label" for="product-number">Number</label>
+                            <select class="c-list-entry-edit-input c-list-entry-edit-input--select" id="${prod.ProductId}-product-number">
+                                <option selected>None</option>
+                                <option>1 (Top Left)</option>
+                                <option>2 (Top Right)</option>
+                                <option>3 (Bottom Left)</option>
+                                <option>4 (Bottom Right)</option>
+                            </select>
+                        </div>
+                        <div class="c-list-entry-edit__buttons">
+                            <button class="c-list-entry-edit__button--confirm" id="${prod.ProductId}-edit-save">Save Product</button>
+                            <button class="c-list-entry-edit__button--cancel" id="${prod.ProductId}-edit-cancel">Cancel</button>
+                        </div>                      
+                    </div>`
     }
     document.querySelector('.c-list-entry-container').innerHTML = prodHTML;
 
     listenToAllDelete();
+    listenToAllEdit();
 }
 
-const showDeleteConfirmed = async function(returned){
+const showDeleteConfirmed = async function (returned) {
     console.log(returned);
     document.querySelector('.js-confirm-delete-title').innerHTML = "Product deleted"
     await sleep(2000);
@@ -74,16 +112,27 @@ const showDeleteConfirmed = async function(returned){
     getAllProducts();
 }
 
+const showProductSaved = async function(prodId){
+    console.log(prodId)
+    document.getElementById(`${prodId}-edit-cont`).style.display = "none";
+    document.getElementById(`${prodId}-product-name`).value = "";
+    document.getElementById(`${prodId}-product-price`).value = "";
+    document.getElementById(`${prodId}-product-stock`).value = "";
+    document.querySelector('.c-status-message').innerHTML = "Product Saved";
+    getAllProducts();
+    await sleep(3000);
+    document.querySelector('.c-status-message').innerHTML = "";
+}
 
 //#endregion
 
 //#region ListenTo
 
-const listenToAllDelete = function(){
+const listenToAllDelete = function () {
     let delButtons = document.querySelectorAll('.js-delete');
 
-    for (let button of delButtons){
-        button.addEventListener('click', function(){
+    for (let button of delButtons) {
+        button.addEventListener('click', function () {
             let prodId = button.id.substring(0, button.id.length - 4);
             let prod = prodById(prodId);
 
@@ -97,17 +146,63 @@ const listenToAllDelete = function(){
     }
 }
 
-const listenToConfirmDelete = function(prodId){
+const listenToAllEdit = function () {
+    let editButtons = document.querySelectorAll('.js-edit');
+
+    for (let button of editButtons) {
+        button.addEventListener('click', function () {
+            let prodId = button.id.substring(0, button.id.length - 5);
+            let prod = prodById(prodId);
+
+            document.getElementById(`${prodId}-edit-cont`).style.display = "flex";
+
+            document.getElementById(`${prodId}-edit-save`).addEventListener('click', function () {
+                let product = {};
+                product['ProductId'] = prodId;
+                product['Name'] = document.getElementById(`${prodId}-product-name`).value;
+                product['Price'] = document.getElementById(`${prodId}-product-price`).value;
+                product['StockCount'] = document.getElementById(`${prodId}-product-stock`).value;
+                product['NumberInVendingMachine'] = document.getElementById(`${prodId}-product-number`).value.substr(0, 1);
+
+                if (product.Name == "") {
+                    product.Name = document.getElementById(`${prodId}-product-name`).placeholder;
+                }
+                if (product.Price == "" || Number(product.Price) <= 0) {
+                    product.Price = document.getElementById(`${prodId}-product-price`).placeholder;
+                }
+                if (product.StockCount == "") {
+                    product.StockCount = document.getElementById(`${prodId}-product-stock`).placeholder;
+                }
+                if (product.NumberInVendingMachine == "N") {
+                    product.NumberInVendingMachine = null;
+                }
+                console.log(product)
+                var jsonString = JSON.stringify(product);
+                handleData(`${IP}/api/v1/product/${prodId}`, showProductSaved, 'PUT', jsonString);
+            })
+
+            document.getElementById(`${prodId}-edit-cancel`).addEventListener('click', function () {
+                document.getElementById(`${prodId}-edit-cont`).style.display = "none";
+                document.getElementById(`${prodId}-product-name`).value = "";
+                document.getElementById(`${prodId}-product-price`).value = "";
+                document.getElementById(`${prodId}-product-stock`).value = "";
+            })
+        })
+    }
+
+}
+
+const listenToConfirmDelete = function (prodId) {
     let confirmDelete = document.querySelector('.js-confirm-delete-yes');
     let denyDelete = document.querySelector('.js-confirm-delete-no');
 
-    confirmDelete.addEventListener('click', function(){
+    confirmDelete.addEventListener('click', function () {
         document.querySelector('.c-confirm-delete__buttons').style.display = "none";
         document.querySelector('.js-confirm-delete-title').innerHTML = "Deleting product..."
-        handleData(`http://192.168.1.225:5500/api/v1/product/${prodId}`, showDeleteConfirmed, 'DELETE');
+        handleData(`${IP}/api/v1/product/${prodId}`, showDeleteConfirmed, 'DELETE');
     });
 
-    denyDelete.addEventListener('click', function(){
+    denyDelete.addEventListener('click', function () {
         document.querySelector('.full-body').style.pointerEvents = "all";
         document.querySelector('.js-confirm-delete').style.display = "none";
         document.querySelector('.c-confirm-delete__buttons').style.display = "flex";
@@ -119,7 +214,7 @@ const listenToConfirmDelete = function(prodId){
 //#region init
 
 const init = function () {
-    socket = io("http://192.168.1.225:5500");
+    socket = io(`${IP}`);
     socket.emit("connected", "ProductPage Connected");
 
     socket.on("return_on_connect", function (msg) {

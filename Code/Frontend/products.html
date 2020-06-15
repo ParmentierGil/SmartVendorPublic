@@ -47,6 +47,7 @@
                     <a class="c-menu-item" href="orders.html">Orders</a>
                 </div>
             </div>
+            <h3 class="c-status-message"></h3>
             <div class="c-list-container">
                 <div class="c-list-header">
                     <div class="c-list-header__name">Name</div>
@@ -55,6 +56,35 @@
                     <div class="c-list-header__actions"></div>
                 </div>
                 <div class="c-list-entry-container">
+                    <div class="c-list-entry-edit-container">
+                        <h2 class="c-list-entry-edit__title">Edit Product</h2>
+                        <div class="c-list-entry-edit__name">
+                            <label class="c-list-entry-edit-label" for="product-name">Name</label>
+                            <input class="c-list-entry-edit-input" type="text" id="product-name"/>
+                        </div>
+                        <div class="c-list-entry-edit__price">
+                            <label class="c-list-entry-edit-label" for="product-price">Price</label>
+                            <input class="c-list-entry-edit-input" type="number" id="product-price"/>
+                        </div>
+                        <div class="c-list-entry-edit__stock">
+                            <label class="c-list-entry-edit-label" for="product-stock">Stock Count</label>
+                            <input class="c-list-entry-edit-input" type="number" id="product-stock"/>
+                        </div>
+                        <div class="c-list-entry-edit__number">
+                            <label class="c-list-entry-edit-label" for="product-number">Number</label>
+                            <select class="c-list-entry-edit-input c-list-entry-edit-input--select" id="product-number">
+                                <option selected>None</option>
+                                <option>1 (Top Left)</option>
+                                <option>2 (Top Right)</option>
+                                <option>3 (Bottom Left)</option>
+                                <option>4 (Bottom Right)</option>
+                            </select>
+                        </div>
+                        <div class="c-list-entry-edit__buttons">
+                            <button class="c-list-entry-edit__button--confirm">Save Product</button>
+                            <button class="c-list-entry-edit__button--cancel">Cancel</button>
+                        </div>                      
+                    </div>
                 </div>
             </div>
             <div class="c-confirm-delete js-confirm-delete">
