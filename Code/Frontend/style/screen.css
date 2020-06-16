@@ -506,38 +506,40 @@ a:focus {
 .c-sensor-container--top {
     margin-bottom: 8px;
 }
+
 .c-sensor-container--bottom {
     margin-top: 8px;
-} 
+}
 
-@media (min-width: 768px){
+@media (min-width: 768px) {
     .c-sensors-container {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
         margin: 48px auto 0;
     }
-    
+
     .c-sensor-container {
         border: 1px solid #116466;
         background-color: #c3d9d3;
         flex-basis: 30%;
         text-align: center;
     }
-    
+
     .c-sensor-container--left {
         margin-left: 15%;
         margin-right: 16px;
     }
-    
+
     .c-sensor-container--right {
         margin-right: 15%;
         margin-left: 16px;
     }
-    
+
     .c-sensor-container--top {
         margin-bottom: 16px;
     }
+
     .c-sensor-container--bottom {
         margin-top: 16px;
     }
@@ -608,8 +610,7 @@ a:focus {
     border-top: 2px solid #116466;
 }
 
-.c-product-info__title {
-}
+.c-product-info__title {}
 
 /* Products Page */
 
@@ -691,6 +692,21 @@ a:focus {
     flex-basis: 20%;
 }
 
+.c-list-header__date,
+.c-list-entry__date {
+    flex-basis: 40%;
+}
+
+.c-list-header__time,
+.c-list-entry__time {
+    flex-basis: 20%;
+}
+
+.c-list-header__product,
+.c-list-entry__product {
+    flex-basis: 40%;
+}
+
 .c-list-entry-divider {
     border-bottom: 2px solid #116466;
     margin: 0 auto;
@@ -721,7 +737,7 @@ a:focus {
     .c-list-entry__actions-edit {
         padding: 0 8px 0 0;
     }
-    
+
     .c-list-entry__actions-delete {
         padding: 0 0 0 8px;
     }
@@ -746,6 +762,23 @@ a:focus {
         flex-basis: 20%;
     }
 
+    /*Orderlist*/
+
+    .c-list-header__date,
+    .c-list-entry__date {
+        flex-basis: 40%;
+    }
+
+    .c-list-header__time,
+    .c-list-entry__time {
+        flex-basis: 20%;
+    }
+
+    .c-list-header__product,
+    .c-list-entry__product {
+        flex-basis: 40%;
+    }
+
 }
 
 .c-confirm-delete {
@@ -753,8 +786,8 @@ a:focus {
     z-index: 1000;
     position: absolute;
     top: 45%;
-    left: 0; 
-    right: 0; 
+    left: 0;
+    right: 0;
     margin: 0 auto;
     width: 50%;
     border: 1px solid #116466;
@@ -804,7 +837,7 @@ a:focus {
     width: 40%;
     display: flex;
     flex-direction: column;
-    align-items: start; 
+    align-items: start;
 }
 
 .c-list-entry-edit-input {

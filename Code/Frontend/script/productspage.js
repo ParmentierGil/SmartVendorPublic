@@ -2,7 +2,7 @@ let socket;
 
 let allProducts;
 
-let IP = "http://178.116.70.109:5500"
+let IP = "http://192.168.1.62:5500"
 
 //#region FUNCTIONS
 
@@ -112,7 +112,7 @@ const showDeleteConfirmed = async function (returned) {
     getAllProducts();
 }
 
-const showProductSaved = async function(prodId){
+const showProductSaved = async function (prodId) {
     console.log(prodId)
     document.getElementById(`${prodId}-edit-cont`).style.display = "none";
     document.getElementById(`${prodId}-product-name`).value = "";
@@ -209,6 +209,56 @@ const listenToConfirmDelete = function (prodId) {
     });
 }
 
+const listenToOpenMenu = function () {
+    let openButton = document.querySelector('.js-open-menu');
+
+    openButton.addEventListener('click', function () {
+        document.querySelector('.c-mobile-menu').style.display = "flex";
+        openButton.style.display = "none";
+        let lefts = document.querySelectorAll('.c-sensor-container--left');
+        let rights = document.querySelectorAll('.c-sensor-container--right');
+        let conts = document.querySelectorAll('.c-sensor-container');
+
+        for (let cont of conts) {
+            cont.style.flexBasis = "75%";
+        }
+
+        for (let l of lefts) {
+            l.style.marginRight = "0px";
+        }
+
+        for (let r of rights) {
+            r.style.marginLeft = "0px";
+        }
+
+    })
+}
+
+const listenToCloseMenu = function () {
+    let closeButton = document.querySelector('.js-close-menu');
+
+    closeButton.addEventListener('click', function () {
+        document.querySelector('.c-mobile-menu').style.display = "none";
+        document.querySelector('.js-open-menu').style.display = "block";
+
+        let lefts = document.querySelectorAll('.c-sensor-container--left');
+        let rights = document.querySelectorAll('.c-sensor-container--right');
+        let conts = document.querySelectorAll('.c-sensor-container');
+
+        for (let cont of conts) {
+            cont.style.flexBasis = "40%";
+        }
+
+        for (let l of lefts) {
+            l.style.marginRight = "8px";
+        }
+
+        for (let r of rights) {
+            r.style.marginLeft = "8px";
+        }
+    })
+}
+
 //#endregion
 
 //#region init
@@ -222,7 +272,8 @@ const init = function () {
     })
 
     getAllProducts();
-
+    listenToOpenMenu();
+    listenToCloseMenu();
 };
 
 document.addEventListener("DOMContentLoaded", function () {
